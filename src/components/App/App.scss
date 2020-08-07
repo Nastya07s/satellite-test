@@ -1,0 +1,22 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+main {
+  max-width: 1440px;
+  width: 1440px;
+  max-height: 800px;
+  height: 800px;
+  margin: 0 auto;
+}
+
+.flex {
+  display: flex;
+}
+
+.figures, .canvas {
+  border: 1px solid black;
+}
+

@@ -4,7 +4,8 @@
   "description": "React app with canvas and Drag'n'Drop",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "webpack-dev-server --open --config ./build/webpack.dev.conf.js",
+    "build": "webpack --open --config ./build/webpack.build.conf.js"
   },
   "repository": {
     "type": "git",

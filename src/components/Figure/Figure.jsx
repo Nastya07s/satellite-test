@@ -1,29 +1,34 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 
-import './Figure.scss';
+import "./Figure.scss";
 
 export default class Figure extends Component {
 
-  // state = {
-  //   active: false,
-  // }
-
-  // setActive = () => {
-  //   this.setState({active: true});
-  // }
-
   render() {
-    const figureClass = this.props.active ? `figure figure-active ${this.props.type}` : `figure ${this.props.type}`
-    console.log('figureClass: ', figureClass);
+    const { type, active } = this.props;
+    const figureClass = active ? `figure figure-active` : `figure`;
+
     return (
-      <div className={figureClass} onClick={() => this.props.onToggleActive(this.props.type)}></div>
-    )
+      <div
+        className={figureClass}
+        onDragStart={this.props.dragStart}
+        draggable
+      >
+        <img
+          src={`./assets/img/${type}.png`}
+          alt="tt"
+          id={this.props.id}
+          style={{ width: 300, height: 100 }}
+        />
+      </div>
+    );
   }
 }
 
 Figure.propTypes = {
   type: PropTypes.string,
   active: PropTypes.bool,
-  onToggleActive: PropTypes.func,
-}
+  dragStart: PropTypes.func,
+  id: PropTypes.string,
+};

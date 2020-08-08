@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import Figure from './../Figure/Figure.jsx';
+import './Figures.scss';
 
 export default class Figures extends Component {
 
@@ -9,14 +10,22 @@ export default class Figures extends Component {
     activeType: -1,
   }
 
-  toggleActive = (type) => {
-    console.log(type);
-    this.setState({activeType: type});
+  dragStart({ dataTransfer, target}) {
+    dataTransfer.effectAllowed = 'move';
+    
+    dataTransfer.setData('id', target.id);
+    dataTransfer.setDragImage(target, 100, 100);
   }
 
   render() {
     const figures = this.props.types.map((type, key) => {
-      return <Figure key={key} type={type} onToggleActive={this.toggleActive} active={this.state.activeType === type ? true : false}/>
+      return <Figure 
+                key={key} 
+                id={`${type}${key}`}
+                type={type} 
+                active={this.state.activeType === type ? true : false}
+                dragStart={this.dragStart}
+              />
     });
 
     return (

@@ -6,20 +6,21 @@ import "./Figure.scss";
 export default class Figure extends Component {
 
   render() {
-    const { type, active } = this.props;
-    const figureClass = active ? `figure figure-active` : `figure`;
+    const { id, type, active, onToggleActive, dragStart } = this.props;
+    const figureClass = active ? `figure figure-active ${type}` : `figure ${type}`;
 
     return (
       <div
         className={figureClass}
-        onDragStart={this.props.dragStart}
+        onDragStart={dragStart}
+        onClick={() => onToggleActive(type)}
         draggable
       >
         <img
           src={`./assets/img/${type}.png`}
           alt="tt"
-          id={this.props.id}
-          style={{ width: 300, height: 100 }}
+          id={id}
+          style={{ width: 290, height: 90 }}
         />
       </div>
     );
@@ -27,8 +28,9 @@ export default class Figure extends Component {
 }
 
 Figure.propTypes = {
+  id: PropTypes.string,
   type: PropTypes.string,
   active: PropTypes.bool,
   dragStart: PropTypes.func,
-  id: PropTypes.string,
+  onToggleActive: PropTypes.func,
 };

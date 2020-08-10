@@ -10,6 +10,11 @@ export default class Figures extends Component {
     activeType: -1,
   }
 
+  onToggleActive = (type) => {
+    this.setState({activeType: type})
+  }
+
+
   dragStart({ dataTransfer, target}) {
     dataTransfer.effectAllowed = 'move';
     
@@ -25,6 +30,7 @@ export default class Figures extends Component {
                 type={type} 
                 active={this.state.activeType === type ? true : false}
                 dragStart={this.dragStart}
+                onToggleActive={this.onToggleActive}
               />
     });
 

@@ -23,10 +23,10 @@ export default class Canvas extends Component {
   };
 
   drawInCanvas = () => {
-    console.log("this.state.figuresInCanvas: ", this.state.figuresInCanvas);
+    // console.log("this.state.figuresInCanvas: ", this.state.figuresInCanvas);
     this.state.figuresInCanvas.forEach(
       ({ id: figure, minScreenX, minScreenY }) => {
-        console.log("figure: ", [figure]);
+        // console.log("figure: ", [figure]);
         const image = new Image();
         image.src = figure.src;
         image.onload = () => {
@@ -70,7 +70,7 @@ export default class Canvas extends Component {
   };
 
   onMouseDown = (event) => {
-    console.log(this.state.figuresInCanvas[0]);
+    // console.log(this.state.figuresInCanvas[0]);
     const { top, left } = document
       .querySelector("canvas")
       .getBoundingClientRect();
@@ -79,16 +79,31 @@ export default class Canvas extends Component {
       firstScreenX: event.screenX - left,
       firstScreenY: event.screenY - top - 70,
     });
+    // console.log('event.screenX: ', event.screenX);
+    // console.log('event.screenY: ', event.screenY);
   };
 
   onMouseUp = () => {
-    this.setState({
+    // const newState = {
+    //   isMouseDown: false,
+    //   isMoveable: false,
+    //   currentFigureIdx: null,
+    //   firstScreenX: null,
+    //   firstScreenY: null,
+    // }
+    // console.log('event.screenX: ', event.screenX);
+    // console.log('event.screenY: ', event.screenY);
+    this.setState(() => ({
+      // figuresInCanvas: [
+      //   ...state.figuresInCanvas.slice(0, state.currentFigureIdx),
+      //   ...state.figuresInCanvas.slice(state.currentFigureIdx + 1),
+      // ],
       isMouseDown: false,
       isMoveable: false,
       currentFigureIdx: null,
       firstScreenX: null,
       firstScreenY: null,
-    });
+    }));
   };
 
   findCurrentFigureIdx = (arrayOfFigures, firstScreenX, firstScreenY) =>{
@@ -106,7 +121,7 @@ export default class Canvas extends Component {
       const { figuresInCanvas, firstScreenX, firstScreenY, isMoveable, currentFigureIdx } = this.state;
 
       const figureIdx = isMoveable ? currentFigureIdx : this.findCurrentFigureIdx(figuresInCanvas, firstScreenX, firstScreenY);
-      console.log(figureIdx);
+      // console.log(figureIdx);
 
       if (figureIdx > -1) {
         const { top, left } = document
@@ -114,7 +129,7 @@ export default class Canvas extends Component {
           .getBoundingClientRect();
 
         const currentFigure = figuresInCanvas[figureIdx];
-        console.log("currentFigure: ", currentFigure);
+        // console.log("currentFigure: ", currentFigure);
         currentFigure.minScreenX = screenX - left;
         currentFigure.minScreenY = screenY - top - 70;
         currentFigure.maxScreenX = screenX - left + 300;
@@ -130,8 +145,31 @@ export default class Canvas extends Component {
           ],
         }));
       }
+      // console.log('MouseMove ', screenX);
+      // console.log('MouseMove ', screenY);
     }
   };
+
+  // onMouseLeave = (event) => {
+  //   console.log('MouseLeave event: ', event);
+
+  // }
+
+  onMouseOver = (event) => {
+    if(this.state.isMouseDown && event.buttons === 0) {
+      console.log('УДАЛЯЙ')
+      this.setState((state) => ({
+        figuresInCanvas: [
+          ...state.figuresInCanvas.slice(0, state.currentFigureIdx),
+          ...state.figuresInCanvas.slice(state.currentFigureIdx + 1),
+        ],
+        currentFigureIdx: null,
+        isMoveable: false,
+        isMouseDown: false,
+      }));
+    }
+    // console.log('MouseOver', event)
+  }
 
   render() {
     return (
@@ -151,6 +189,8 @@ export default class Canvas extends Component {
         onMouseDown={(event) => this.onMouseDown(event)}
         onMouseUp={(event) => this.onMouseUp(event)}
         onMouseMove={(event) => this.onMouseMove(event)}
+        onMouseOver={(event) => {event.persist();this.onMouseOver(event)}}
+        // onMouseLeave={(event) => {event.persist(); this.onMouseLeave(event)}}
       ></canvas>
     );
   }
